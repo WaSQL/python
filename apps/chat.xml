@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<export dbname="stage" timestamp="1429371582">
+<xmlschema name="chatlog">
+	<field name="_cdate" type="datetime NOT NULL Default 'CURRENT_TIMESTAMP'" />
+	<field name="_cuser" type="int(11) NOT NULL" />
+	<field name="_edate" type="datetime NULL" />
+	<field name="_euser" type="int(11) NULL" />
+	<field name="_id" type="int(11) NOT NULL Primary Key auto_increment" />
+	<field name="msg" type="varchar(1500) NULL" />
+	<field name="msg_from" type="int(11) NOT NULL Default 0" />
+	<field name="msg_to" type="int(11) NOT NULL Default 0" />
+</xmlschema>
+<xmlmeta name="_fielddata">
+	<_cdate>2015-04-15 07:15:50</_cdate>
+	<_cuser>1</_cuser>
+	<_id>354</_id>
+	<fieldname>_cdate</fieldname>
+	<inputtype>datetime</inputtype>
+	<postedit>1</postedit>
+	<required>1</required>
+	<synchronize>1</synchronize>
+	<tablename>chatlog</tablename>
+	<tvals>1</tvals>
+</xmlmeta>
+<xmlmeta name="_fielddata">
+	<_cdate>2015-04-15 07:15:50</_cdate>
+	<_cuser>1</_cuser>
+	<_id>355</_id>
+	<fieldname>_edate</fieldname>
+	<inputtype>datetime</inputtype>
+	<postedit>1</postedit>
+	<required>0</required>
+	<synchronize>1</synchronize>
+	<tablename>chatlog</tablename>
+	<tvals>1</tvals>
+</xmlmeta>
+
+
+<xmldata name="_pages">
+	<_adate>2015-04-18 09:38:55</_adate>
+	<_aip>10.10.132.184</_aip>
+	<_amem>8650752</_amem>
+	<_auser>21</_auser>
+	<_cache>0</_cache>
+	<_cdate>2015-04-15 07:15:50</_cdate>
+	<_cuser>1</_cuser>
+	<_edate>2015-04-18 09:36:57</_edate>
+	<_env><![CDATA[
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;env&gt;
+        &lt;HTTP_USER_AGENT&gt;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0&lt;/HTTP_USER_AGENT&gt;
+        &lt;REMOTE_ADDR&gt;10.10.132.184&lt;/REMOTE_ADDR&gt;
+        &lt;REMOTE_PORT&gt;53880&lt;/REMOTE_PORT&gt;
+        &lt;REMOTE_BROWSER&gt;firefox&lt;/REMOTE_BROWSER&gt;
+        &lt;REMOTE_BROWSER_VERSION&gt;37.0&lt;/REMOTE_BROWSER_VERSION&gt;
+        &lt;REMOTE_OS&gt;Windows 7&lt;/REMOTE_OS&gt;
+        &lt;REMOTE_LANG&gt;en-US&lt;/REMOTE_LANG&gt;
+        &lt;REMOTE_COUNTRY&gt;US&lt;/REMOTE_COUNTRY&gt;
+        &lt;REMOTE_DEVICE&gt;PC&lt;/REMOTE_DEVICE&gt;
+        &lt;GUID&gt;003d328e002e60384af41d7e31937687406a56e7&lt;/GUID&gt;
+&lt;env&gt;
+
+]]></_env>
+	<_euser>1</_euser>
+	<_id>27</_id>
+	<_template>1</_template>
+	<body><![CDATA[
+&lt;view:default&gt;
+&lt;div style=&quot;position:relative;&quot;&gt;
+	&lt;div id=&quot;chat_userlistform&quot;&gt;
+		&lt;form class=&quot;w_form&quot; method=&quot;post&quot; name=&quot;chat_searchform&quot; action=&quot;/chat&quot; onsubmit=&quot;return false;&quot;&gt;
+			&lt;input type=&quot;hidden&quot; name=&quot;_template&quot; value=&quot;1&quot; /&gt;
+			&lt;input type=&quot;hidden&quot; name=&quot;func&quot; value=&quot;search&quot; /&gt;
+			&lt;div class=&quot;input-group&quot;&gt;
+				&lt;input type=&quot;text&quot; autocomplete=&quot;off&quot; data-tooltip=&quot;&lt;?=$chatTitle;?&gt; - search by NAME or DEPARTMENT&quot; data-tooltip_position=&quot;bottom&quot; onkeyup=&quot;chatSearchList(this.value);&quot; class=&quot;form-control input-sm&quot; name=&quot;search&quot; value=&quot;&quot; placeholder=&quot;&lt;?=$chatTitle;?&gt;&quot; /&gt;
+				&lt;span class=&quot;input-group-addon w_pointer&quot; data-tooltip=&quot;Show People I have chatted with&quot; data-tooltip_position=&quot;bottom&quot; onclick=&quot;chatShowMyChatUsers();&quot;&gt;&lt;span class=&quot;w_primary&quot; id=&quot;chat_icon_color&quot;&gt;&lt;span class=&quot;icon-chat&quot; style=&quot;padding-right:5px;&quot;&gt;&lt;/span&gt;&lt;span id=&quot;chat_active_users_count&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+			&lt;/div&gt;
+		&lt;/form&gt;
+	&lt;/div&gt;
+	&lt;div id=&quot;chat_mychatusers&quot; style=&quot;display:none;&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;chat_userlist&quot; data-behavior=&quot;ajax&quot; url=&quot;/chat?_template=1&amp;func=userlist&quot; timer=&quot;60&quot;&gt;
+		&lt;?=renderView('_userlist',$chat['userlist'],array('-alias'=&gt;'users'));?&gt;
+	&lt;/div&gt;
+	&lt;div id=&quot;chat_chatlist&quot; data-behavior=&quot;ajax&quot; data-function=&quot;chatlistTimer();&quot; data-timer=&quot;10&quot;&gt;
+		&lt;?=renderView('_chatlist',$chat['chatlist'],array('-alias'=&gt;'chats'));?&gt;
+	&lt;/div&gt;
+	&lt;div style=&quot;display:none;&quot;&gt;
+		&lt;div id=&quot;nulldiv&quot;&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;/view:default&gt;
+
+&lt;view:_userlist&gt;
+	&lt;view:_user&gt;
+		&lt;div class=&quot;user&quot; data-userlist=&quot;&lt;?=strtolower(&quot;{$cuser['name']} - {$cuser['department']}&quot;);?&gt;&quot; style=&quot;display:none;&quot;&gt;
+			&lt;a href=&quot;#&quot; onclick=&quot;return chatSendMessage(&lt;?=$cuser['_id'];?&gt;,'*');&quot; class=&quot;w_block w_link&quot;&gt;&lt;span data-minutes=&quot;&lt;?=$cuser['minutes'];?&gt;&quot; class=&quot;icon-user &lt;?=$cuser['active_level'];?&gt;&quot;&gt;&lt;/span&gt; &lt;?=$cuser['name'];?&gt; - &lt;?=$cuser['department'];?&gt;&lt;/a&gt;
+		&lt;/div&gt;
+	&lt;/view:_user&gt;
+	&lt;?=renderEach('_user',$users,array('-alias'=&gt;'cuser'));?&gt;
+	&lt;?=buildOnLoad(&quot;chatSearchList(document.chat_searchform.search.value);&quot;);?&gt;
+&lt;/view:_userlist&gt;
+
+&lt;view:_chatlist&gt;
+	&lt;view:_user&gt;
+		&lt;div class=&quot;chatbox &lt;?=$chat['notify'];?&gt;&quot;&gt;
+			&lt;div class=&quot;w_right&quot;&gt;&lt;span class=&quot;icon-cancel-squared w_red w_pointer w_block&quot; onclick=&quot;chatSendMessage(&lt;?=$chat['id'];?&gt;,'-');&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+			&lt;div class=&quot;title&quot; title=&quot;User &lt;?=$chat['id'];?&gt; is &lt;?=$chat['active_level'];?&gt;&quot;&gt;&lt;span class=&quot;icon-user &lt;?=$chat['active_level'];?&gt;&quot;&gt;&lt;/span&gt;  &lt;?=$chat['name'];?&gt; - &lt;?=$chat['department'];?&gt;&lt;/div&gt;
+			&lt;div class=&quot;chats&quot; id=&quot;chatbox_chats_&lt;?=$chat['id'];?&gt;&quot;&gt;
+			&lt;view:_msg&gt;
+				&lt;div class=&quot;msg &lt;?=$msg['class'];?&gt;&quot;&gt;&lt;?=chatMessageDate($msg['_cdate']);?&gt;: &lt;?=$msg['msg'];?&gt;&lt;/div&gt;
+			&lt;/view:_msg&gt;
+			&lt;?=renderEach('_msg',$chat['msgs'],array('-alias'=&gt;'msg'));?&gt;
+			&lt;/div&gt;
+			&lt;?=renderView('_chatform',$chat,array('-alias'=&gt;'chat'));?&gt;
+			&lt;?=buildOnLoad(&quot;chatScrollToBottom({$chat['id']})&quot;);?&gt;
+		&lt;/div&gt;
+	&lt;/view:_user&gt;
+	&lt;?=renderEach('_user',$chats,array('-alias'=&gt;'chat'));?&gt;
+	&lt;view:_setfocus&gt;
+	&lt;?=buildOnLoad(&quot;chatSetFocus({$_REQUEST['setfocus']})&quot;);?&gt;
+	&lt;/view:_setfocus&gt;
+	&lt;?=renderViewIf(isset($_REQUEST['setfocus']),'_setfocus');?&gt;
+&lt;/view:_chatlist&gt;
+
+
+&lt;view:_chatform&gt;
+&lt;div class=&quot;form&quot;&gt;
+	&lt;form name=&quot;chatform_&lt;?=$chat['id'];?&gt;&quot; id=&quot;chatform_&lt;?=$chat['id'];?&gt;&quot; class=&quot;chatform&quot; method=&quot;post&quot; action=&quot;/chat&quot; onsubmit=&quot;return ajaxSubmitForm(this,'chat_chatlist');&quot;&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;msg_to&quot; value=&quot;&lt;?=$chat['id'];?&gt;&quot; /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;_template&quot; value=&quot;1&quot; /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;setfocus&quot; value=&quot;&lt;?=$chat['id'];?&gt;&quot; /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;func&quot; value=&quot;sendmessage&quot; /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;noprocessing&quot; value=&quot;1&quot; /&gt;
+	&lt;div class=&quot;input-group&quot;&gt;
+		&lt;input type=&quot;text&quot; autocomplete=&quot;off&quot; class=&quot;form-control input-sm&quot; name=&quot;msg&quot; required=&quot;1&quot; value=&quot;&quot; placeholder=&quot;Click here to send message&quot; /&gt;
+		&lt;span class=&quot;input-group-btn&quot;&gt;&lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-sm&quot;&gt;&amp;#9658;&lt;/button&gt;&lt;/span&gt;
+	&lt;/div&gt;
+	&lt;/form&gt;
+&lt;/div&gt;
+&lt;/view:_chatform&gt;
+
+&lt;view:mychatusers&gt;
+	&lt;div align=&quot;right&quot;&gt;Recent &lt;span class=&quot;icon-cancel-squared w_red w_pointer w_block&quot; onclick=&quot;hideId('chat_mychatusers');&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+	&lt;view:_myuser&gt;
+		&lt;div&gt;&lt;a href=&quot;#&quot; onclick=&quot;return chatSendMessage(&lt;?=$user['_id'];?&gt;,'*');&quot;&gt;&lt;span class=&quot;icon-chat&quot;&gt;&lt;/span&gt;&lt;?=&quot;{$user['firstname']} {$user['lastname']}&quot;;?&gt;&lt;/a&gt;&lt;/div&gt;
+	&lt;/view:_myuser&gt;
+	&lt;?=renderEach('_myuser',$users,array('-alias'=&gt;'user'));?&gt;
+&lt;/view:mychatusers&gt;
+
+]]></body>
+	<controller><![CDATA[
+&lt;?php
+	loadExtrasCss('accordian');
+	global $USER;
+	chatCheckSetup();
+	$chatTitle=isset($_REQUEST['chat_title'])?$_REQUEST['chat_title']:'chatjat';
+	if(!isUser()){
+    	setView('login',1);
+    	return;
+	}
+	$chat=array();
+	//get users in groups
+	switch(strtolower($_REQUEST['func'])){
+		case 'mychatusers':
+			$users=chatGetMyChatUsers();
+			setView('mychatusers',1);
+			return;
+		break;
+		case 'userlist':
+			$users=chatGetUserList();
+			setView('_userlist',1);
+			return;
+		break;
+		case 'chatlist':
+			$chats=chatGetChatList();
+			setView('_chatlist',1);
+			return;
+		break;
+		case 'sendmessage':
+			$msg_to=addslashes($_REQUEST['msg_to']);
+			$msg=addslashes($_REQUEST['msg']);
+			if($msg=='*'){
+				$_REQUEST['setfocus']=$msg_to;
+			}
+			$ok=addDBRecord(array(
+				'-table'	=&gt; 'chatlog',
+				'msg_from'	=&gt; $USER['_id'],
+				'msg_to'	=&gt; $msg_to,
+				'msg'		=&gt; $msg
+			));
+			$chats=chatGetChatList();
+			setView('_chatlist',1);
+			if(isset($_REQUEST['formid'])){
+				$formid=addslashes($_REQUEST['formid']);
+				setView('_focusform');
+			}
+		break;
+    	default:
+    		$chat['userlist']=chatGetUserList();
+    		$chat['chatlist']=chatGetChatList();
+    		setView('default');
+    	break;
+	}
+?&gt;
+
+]]></controller>
+	<css>#chat_userlistform{
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#chat_mychatusers{
+	position:absolute;
+	top:30px;
+	left:0px;
+	z-index:9999999;
+	background:#f0f0f0;
+	max-height:600px;
+	overflow:auto;
+	padding:5px 18px 20px 5px;
+	color:#000;
+	border-left:1px solid rgba(102, 175, 233, 1);
+	border-right:1px solid rgba(102, 175, 233, 1);
+	border-bottom:1px solid rgba(102, 175, 233, 1);
+	background-color:#fff;
+	-webkit-border-bottom-left-radius: 4px;
+	-khtml-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-khtml-border-radius-bottomright: 4px;
+	border-bottom-right-radius: 4px;
+	box-shadow: 0 0 5px rgba(81, 203, 238, .55);
+	transition: box-shadow ease-in-out .15s;
+}
+#chat_userlist{
+	position:absolute;
+	top:30px;
+	left:0px;
+	z-index:9999999;
+	background:#f0f0f0;
+	max-height:600px;
+	overflow:auto;
+	padding-right:18px;
+	color:#000;
+
+}
+#chat_chatlist{
+	position:absolute;
+	top:30px;
+	left:0px;
+	z-index:99999999;
+	background:inherit;
+	color:#000;
+}
+#chat_chatlist a, #chat_userlist a, #chat_mychatusers a{
+	color:#535353;
+	font-size:.8em;
+}
+
+#chat_userlist{
+	border-left:1px solid rgba(102, 175, 233, 1);
+	border-right:1px solid rgba(102, 175, 233, 1);
+	border-bottom:1px solid rgba(102, 175, 233, 1);
+	background-color:#fff;
+	z-index:9999999;
+	-webkit-border-bottom-left-radius: 4px;
+	-khtml-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-khtml-border-radius-bottomright: 4px;
+	border-bottom-right-radius: 4px;
+	box-shadow: 0 0 5px rgba(81, 203, 238, .55);
+	transition: box-shadow ease-in-out .15s;
+	padding-bottom:20px;
+}
+/* user icon colors for active, was_active, and inactive */
+#chat_chatlist span.icon-user.active, #chat_userlist span.icon-user.active{
+	color:#5cb85c;
+}
+#chat_chatlist span.icon-user.was_active, #chat_userlist span.icon-user.was_active{
+	color:#5bc0de;
+}
+#chat_chatlist span.icon-user.inactive, #chat_userlist span.icon-user.inactive{
+	color:#d7d7e1;
+}
+/* message colors and size */
+#chat_chatlist .msg{
+	font-size:.8em;
+}
+#chat_chatlist .msg.me{
+	color:#d38212;
+}
+#chat_chatlist .msg.them{
+	color:#6388a3;
+}
+
+#chat_chatlist{
+	margin-top:30px;
+}
+
+#chat_chatlist .chatbox{
+	margin-top:10px;
+	border:1px solid rgba(102, 175, 233, 1);
+	background-color:#fff;
+	z-index:999999;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	box-shadow: 0 0 5px rgba(81, 203, 238, .55);
+	transition: box-shadow ease-in-out .15s;
+	padding:3px;
+}
+#chat_chatlist .chatbox.new{
+	border:1px solid rgba(255, 32, 32, 1);
+	background-color:#ffff20;
+}
+#chat_chatlist .title{
+	margin-bottom:10px;
+	font-size:.9em;
+}
+#chat_chatlist .chats{
+	max-height:100px;
+	overflow:auto;
+}
+#chat_chatlist .form{
+	margin-top:10px;
+}
+</css>
+	<css_min>#chat_userlistform{position:absolute;top:0px;left:0px}#chat_mychatusers{position:absolute;top:30px;left:0px;z-index:9999999;background:#f0f0f0;max-height:600px;overflow:auto;padding:5px 18px 20px 5px;color:#000;border-left:1px solid rgba(102, 175, 233, 1);border-right:1px solid rgba(102, 175, 233, 1);border-bottom:1px solid rgba(102, 175, 233, 1);background-color:#fff;-webkit-border-bottom-left-radius:4px;-khtml-border-radius-bottomleft:4px;border-bottom-left-radius:4px;-webkit-border-bottom-right-radius:4px;-khtml-border-radius-bottomright:4px;border-bottom-right-radius:4px;box-shadow:0 0 5px rgba(81, 203, 238, .55);transition:box-shadow ease-in-out .15s}#chat_userlist{position:absolute;top:30px;left:0px;z-index:9999999;background:#f0f0f0;max-height:600px;overflow:auto;padding-right:18px;color:#000}#chat_chatlist{position:absolute;top:30px;left:0px;z-index:99999999;background:inherit;color:#000}#chat_chatlist a,#chat_userlist a,#chat_mychatusers a{color:#535353;font-size:.8em}#chat_userlist{border-left:1px solid rgba(102, 175, 233, 1);border-right:1px solid rgba(102, 175, 233, 1);border-bottom:1px solid rgba(102, 175, 233, 1);background-color:#fff;z-index:9999999;-webkit-border-bottom-left-radius:4px;-khtml-border-radius-bottomleft:4px;border-bottom-left-radius:4px;-webkit-border-bottom-right-radius:4px;-khtml-border-radius-bottomright:4px;border-bottom-right-radius:4px;box-shadow:0 0 5px rgba(81, 203, 238, .55);transition:box-shadow ease-in-out .15s;padding-bottom:20px}#chat_chatlist span.icon-user.active,#chat_userlist span.icon-user.active{color:#5cb85c}#chat_chatlist span.icon-user.was_active,#chat_userlist span.icon-user.was_active{color:#5bc0de}#chat_chatlist span.icon-user.inactive,#chat_userlist span.icon-user.inactive{color:#d7d7e1}#chat_chatlist .msg{font-size:.8em}#chat_chatlist .msg.me{color:#d38212}#chat_chatlist .msg.them{color:#6388a3}#chat_chatlist{margin-top:30px}#chat_chatlist .chatbox{margin-top:10px;border:1px solid rgba(102, 175, 233, 1);background-color:#fff;z-index:999999;-webkit-border-radius:3px;-khtml-border-radius:3px;border-radius:3px;box-shadow:0 0 5px rgba(81, 203, 238, .55);transition:box-shadow ease-in-out .15s;padding:3px}#chat_chatlist .chatbox.new{border:1px solid rgba(255, 32, 32, 1);background-color:#ffff20}#chat_chatlist .title{margin-bottom:10px;font-size:.9em}#chat_chatlist .chats{max-height:100px;overflow:auto}#chat_chatlist .form{margin-top:10px}</css_min>
+	<functions><![CDATA[
+&lt;?php
+/*
+	Chat app
+
+
+*/
+/*-------------*/
+function chatGetMyChatUsers($days=7){
+	global $USER;
+	//get a list of users that I have chatted with in the past x days
+	$query=&quot;
+SELECT
+	u._id
+	,u.firstname
+	,u.lastname
+	,max(c._cdate) as last_date
+FROM _users u, chatlog c
+WHERE
+	c.msg_to=u._id
+	and c.msg_from={$USER['_id']}
+	and c._cdate &gt; DATE_SUB(NOW(), INTERVAL {$days} DAY)
+GROUP BY
+	u._id
+	,u.firstname
+	,u.lastname
+ORDER BY last_date desc
+	&quot;;
+	return getDBRecords(array('-query'=&gt;$query));
+}
+/*-------------*/
+function chatMessageDate($d){
+	$dt=strtotime($d);
+	$cdate=getdate();
+	$ddate=getdate($dt);
+	if($cdate['year'] != $ddate['year']){
+		return date('m/d/Y h:i a',$dt);
+	}
+	elseif($cdate['mon'] != $ddate['mon']){
+		return date('m/d h:i a',$dt);
+	}
+	elseif($cdate['mday'] != $ddate['mday']){
+		return date('jS h:i a',$dt);
+	}
+	else{return date('g:i a',$dt);}
+
+}
+/*-------------*/
+function chatCheckSetup(){
+	global $USER;
+	if(!isNum($USER['chatlog_id'])){$USER['chatlog_id']=0;}
+	//check for chatlog_id in _users table
+	$fields=getDBFields('_users');
+	if(!in_array('department',$fields)){
+    	$query=&quot;ALTER TABLE _users ADD department varchar(125) NULL&quot;;
+		$ok=executeSQL($query);
+	}
+	if(!strlen($USER['department'])){$USER['department']='No Department';}
+	//check for the chatlog table
+	$table='chatlog';
+	if(!isDBTable($table)){
+		$fields=array(
+			'msg_from'	=&gt; 'integer NOT NULL Default 0',
+			'msg_to'	=&gt; 'integer NOT NULL Default 0',
+			'msg'		=&gt; &quot;varchar(1500) NOT NULL Default ''&quot;
+		);
+		$ok = createDBTable($table,$fields,'InnoDB');
+		if($ok != 1){return false;}
+		//$ok=addDBIndex(array('-table'=&gt;$table,'-fields'=&gt;&quot;_cuser,category,title&quot;,'-unique'=&gt;1));
+		//Add tabledata
+		$addopts=array('-table'=&gt;&quot;_tabledata&quot;,
+			'tablename'		=&gt; $table,
+			'formfields'	=&gt; &quot;msg_from msg_to\r\nmsg&quot;,
+			'listfields'	=&gt; &quot;_cdate\r\nmsg_from\r\nmsg_to&quot;,
+			);
+		$id=addDBRecord($addopts);
+		return true;
+	}
+	//clean up messages
+	chatCleanupMessages();
+	return true;
+}
+/*-------------*/
+function chatGetUserList(){
+	global $USER;
+	$recs=getDBRecords(array(
+		'-table'	=&gt; '_users',
+		'-where'	=&gt; &quot;active=1 and _id != {$USER['_id']}&quot;,
+		'-fields'	=&gt; &quot;_id,concat(firstname,' ',lastname) as name,department,phone,_adate&quot;
+	));
+	if(!is_array($recs)){return array();}
+	foreach($recs as $i=&gt;$rec){
+    	//set color based on how active
+    	$minutes=floor(time()-strtotime($rec['_adate']))/60;
+    	$recs[$i]['minutes']=$minutes;
+    	if($minutes &lt; 3){
+			$recs[$i]['active_level']='active';
+			$recs[$i]['sort']=1;
+		}
+    	elseif($minutes &lt; 10){
+			$recs[$i]['active_level']='was_active';
+			$recs[$i]['sort']=2;
+		}
+    	else{
+			$recs[$i]['active_level']='inactive';
+			$recs[$i]['sort']=3;
+		}
+	}
+	//sort them by sort,name
+	$recs=sortArrayByKeys($recs, array('sort'=&gt;SORT_ASC, 'name'=&gt;SORT_ASC));
+	return $recs;
+}
+/*-------------*/
+function chatCleanupMessages(){
+	global $USER;
+	//delete old blanks
+	$ok=delDBRecord(array(
+		'-table'	=&gt; 'chatlog',
+		'-where'	=&gt; &quot;msg_from={$USER['_id']} and (msg='' or msg='*')&quot;
+	));
+	//remove blanks older than two days and remove messages older than 1 year
+	$ok=delDBRecord(array(
+		'-table'	=&gt; 'chatlog',
+		'-where'	=&gt; &quot;(msg='-' or msg='*') AND _cdate &lt; DATE_SUB(NOW(), INTERVAL 2 DAY)&quot;
+	));
+	//remove all records older than one year
+	$ok=delDBRecord(array(
+		'-table'	=&gt; 'chatlog',
+		'-where'	=&gt; &quot;_cdate &lt; DATE_SUB(NOW(), INTERVAL 1 YEAR)&quot;
+	));
+	return 1;
+}
+/*-------------*/
+function chatGetChatList(){
+	/*
+		return all users that have:
+			1. sent me a message(msg_to is 1) since I sent them a message (msg_from is 1) where their message is in the last 7 days
+					msg_to={$USER['_id']}
+					AND _cdate &lt; DATE_SUB(NOW(), INTERVAL 7 Day)
+					AND _id &gt; (select max(_id) from chatlog where msg_from {$USER['_id']}
+			2. that I have sent a real message to in the last 30 minutes
+					_cdate &lt; DATE_SUB(NOW(), INTERVAL 30 MINUTE) AND msg != ''
+			3. That I have sent a blank message to in the last 5 minutes
+					_cdate &lt; DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND msg = ''
+	*/
+	global $USER;
+	$usermap=getDBRecords(array(
+		'-table'	=&gt; '_users',
+		'active'	=&gt; 1,
+		'-fields'	=&gt; &quot;_id,_adate,username,concat(firstname,' ',lastname) as name,department&quot;,
+		'-index'	=&gt; '_id'
+	));
+	foreach($usermap as $i=&gt;$rec){
+    	//set color based on how active
+    	$minutes=floor(time()-strtotime($rec['_adate']))/60;
+    	if($minutes &lt; 3){
+			$usermap[$i]['active_level']='active';
+			$usermap[$i]['sort']=1;
+		}
+    	elseif($minutes &lt; 10){
+			$usermap[$i]['active_level']='was_active';
+			$usermap[$i]['sort']=2;
+		}
+    	else{
+			$usermap[$i]['active_level']='inactive';
+			$usermap[$i]['sort']=3;
+		}
+	}
+	$query=&quot;
+SELECT _cdate,_id,msg,msg_to,msg_from
+FROM chatlog
+WHERE
+	(msg_from = {$USER['_id']} AND _cdate &gt; DATE_ADD(NOW(), INTERVAL -60 MINUTE))
+	OR
+	(msg_to = {$USER['_id']} AND _cdate &gt; DATE_ADD(NOW(), INTERVAL -5 Day))
+	OR
+	(msg_from = {$USER['_id']} AND _cdate &gt; DATE_ADD(NOW(), INTERVAL -3 MINUTE) AND msg = '*')
+ORDER BY _id desc
+	&quot;;
+	//get the records
+	$recs= getDBRecords(array('-query'=&gt;$query));
+	//group by msg_to
+	$chats=array();
+	foreach($recs as $i=&gt;$rec){
+		if($rec['msg_to'] != $USER['_id']){$id=$rec['msg_to'];}
+		elseif($rec['msg_from'] != $USER['_id']){$id=$rec['msg_from'];}
+		else{$id=$USER['id'];}
+		if(!isset($chats[$id]['id']) &amp;&amp; $id != $USER['_id']){
+				$chats[$id]=array(
+					'name'			=&gt; $usermap[$id]['name'],
+					'id'			=&gt; $id,
+					'active_level'	=&gt; $usermap[$id]['active_level'],
+					'department'	=&gt; $usermap[$id]['department'],
+					'notify'		=&gt; ''
+				);
+		}
+		if($rec['msg_from']==$USER['_id']){$rec['class']='me';}
+		else{$rec['class']='them';}
+		$rec['msg']=str_replace(&quot;\\'&quot;,&quot;'&quot;,$rec['msg']);
+		$chats[$id]['msgs'][]=$rec;
+	}
+	//echo printValue($chats);exit;
+	//cleanup chat records
+	foreach($chats as $id=&gt;$chat){
+		$msgs=$chat['msgs'];
+		//if my last message is a - or x then skip
+		$my_last_message=array();
+		$their_last_message=array();
+		foreach($msgs as $msg){
+        	if($msg['msg_from']==$USER['_id'] &amp;&amp; !isset($my_last_message['_id'])){
+            	$my_last_message=$msg;
+			}
+			if($msg['msg_to']==$USER['_id'] &amp;&amp; !in_array($msg['msg'],array('','*','-','x')) &amp;&amp; !isset($their_last_message['_id'])){
+            	$their_last_message=$msg;
+			}
+		}
+		//if($id==21){echo &quot;{$id},[{$my_last_message['_id']},{$my_last_message['msg']}],[{$their_last_message['_id']},{$their_last_message['msg']}]&lt;br&gt;\n&quot;;}
+		if(in_array($my_last_message['msg'],array('-','x')) &amp;&amp; $their_last_message['_id'] &lt; $my_last_message['_id']){
+			unset($chats[$id]);
+        	continue;
+		}
+		//
+		//remove close messages
+		foreach($msgs as $i=&gt;$msg){
+        	if(in_array($msg['msg'],array('-','x'))){
+				unset($msgs[$i]);
+			}
+		}
+		//set new class if the first message is to me and is not a *
+		if($msgs[0]['msg_to']==$USER['_id'] &amp;&amp; !in_array($msgs[0]['msg'],array('','*'))){
+        	$chats[$id]['notify']='new';
+		}
+		if(!count($msgs)){
+        	unset($chats[$id]);
+        	continue;
+		}
+		//remove unwanted messages
+		foreach($msgs as $i=&gt;$msg){
+        	if(in_array($msg['msg'],array('','*','-','x'))){
+				unset($msgs[$i]);
+			}
+		}
+		//reverse the messages
+		$msgs=array_reverse($msgs);
+		//assign to chats again
+		$chats[$id]['msgs']=$msgs;
+	}
+	//echo printValue($chats);
+	$chats=sortArrayByKeys($chats, array('id'=&gt;SORT_ASC, 'name'=&gt;SORT_ASC));
+	return $chats;
+}
+?&gt;
+
+]]></functions>
+	<js><![CDATA[
+function chatlistTimer(){
+	if(undefined != document.activeElement &amp;&amp; document.activeElement.name=='msg'){return;}
+	ajaxGet('/chat','chat_chatlist',{_template:1,func:'chatlist',nosetprocess:1});
+}
+function chatShowMyChatUsers(){
+	var obj=getObject('chat_mychatusers');
+	if(obj.style.display!='none'){
+		obj.style.display='none';
+		return;
+	}
+	return ajaxGet('/chat','chat_mychatusers',{_template:1,func:'mychatusers',nosetprocess:1});
+}
+function chatSetFocus(id){
+	if(undefined == document.getElementById('chatform_'+id)){
+		console.log('chatform_'+id+' does not exist to focus on');
+		return;
+	}
+	document.getElementById('chatform_'+id).msg.focus();
+}
+function chatScrollToBottom(id){
+	if(undefined == document.getElementById('chatbox_chats_'+id)){
+		console.log('chatbox_chats_'+id+' does not exist to scroll to bottom of');
+		return;
+	}
+	var element=document.getElementById('chatbox_chats_'+id);
+	element.scrollTop = element.scrollHeight;
+}
+
+function chatSendMessage(msg_to,msg){
+	hideId('chat_mychatusers');
+	if(undefined == msg || !msg.length){msg='*';}
+	document.chat_searchform.search.value='';
+	chatSearchList();
+	return ajaxGet('/chat','chat_chatlist',{_template:1,func:'sendmessage',msg_to:msg_to,msg:msg,nosetprocess:1});
+}
+/* autocomplete functionality for chat search field */
+function chatSearchList(str){
+	if(undefined==str){str='';}
+	str=str.toLowerCase();
+	var list=document.querySelectorAll('div[data-userlist]');
+	var cnt=0;
+	for(var i=0;i&lt;list.length;i++){
+		var val=list[i].getAttribute('data-userlist');
+		if(!str.length || val.indexOf(str)==-1){
+    		list[i].style.display='none';
+		}
+		else{
+        	list[i].style.display='block';
+        	cnt++;
+		}
+	}
+	if(cnt&gt;0){
+    	document.querySelector('div#chat_userlist').style.display='block';
+	}
+	else{
+    	document.querySelector('div#chat_userlist').style.display='none';
+	}
+	return false;
+}
+
+]]></js>
+	<js_min><![CDATA[
+function chatlistTimer(){(void 0==document.activeElement||&quot;msg&quot;!=document.activeElement.name)&amp;&amp;ajaxGet(&quot;/chat&quot;,&quot;chat_chatlist&quot;,{_template:1,func:&quot;chatlist&quot;,nosetprocess:1})}function chatShowMyChatUsers(){var t=getObject(&quot;chat_mychatusers&quot;);return&quot;none&quot;!=t.style.display?void(t.style.display=&quot;none&quot;):ajaxGet(&quot;/chat&quot;,&quot;chat_mychatusers&quot;,{_template:1,func:&quot;mychatusers&quot;,nosetprocess:1})}function chatSetFocus(t){return void 0==document.getElementById(&quot;chatform_&quot;+t)?void console.log(&quot;chatform_&quot;+t+&quot; does not exist to focus on&quot;):void document.getElementById(&quot;chatform_&quot;+t).msg.focus()}function chatScrollToBottom(t){if(void 0==document.getElementById(&quot;chatbox_chats_&quot;+t))return void console.log(&quot;chatbox_chats_&quot;+t+&quot; does not exist to scroll to bottom of&quot;);var e=document.getElementById(&quot;chatbox_chats_&quot;+t);e.scrollTop=e.scrollHeight}function chatSendMessage(t,e){return hideId(&quot;chat_mychatusers&quot;),void 0!=e&amp;&amp;e.length||(e=&quot;*&quot;),document.chat_searchform.search.value=&quot;&quot;,chatSearchList(),ajaxGet(&quot;/chat&quot;,&quot;chat_chatlist&quot;,{_template:1,func:&quot;sendmessage&quot;,msg_to:t,msg:e,nosetprocess:1})}function chatSearchList(t){void 0==t&amp;&amp;(t=&quot;&quot;),t=t.toLowerCase();for(var e=document.querySelectorAll(&quot;div[data-userlist]&quot;),o=0,c=0;c&lt;e.length;c++){var s=e[c].getAttribute(&quot;data-userlist&quot;);t.length&amp;&amp;-1!=s.indexOf(t)?(e[c].style.display=&quot;block&quot;,o++):e[c].style.display=&quot;none&quot;}return document.querySelector(&quot;div#chat_userlist&quot;).style.display=o&gt;0?&quot;block&quot;:&quot;none&quot;,!1}
+]]></js_min>
+	<name>chat</name>
+	<page_type>0</page_type>
+	<postedit>1</postedit>
+	<sort_order>0</sort_order>
+	<synchronize>1</synchronize>
+	<title>Chat</title>
+</xmldata>
+</export>
