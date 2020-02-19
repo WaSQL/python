@@ -38,3 +38,6 @@ def isWindows():
 		return True
 	else:
 		return False
+
+def getParentPath(path):
+	return os.path.abspath(os.path.join(path, os.pardir))

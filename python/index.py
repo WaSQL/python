@@ -4,10 +4,11 @@ import os
 import sys
 
 import common
-#import config
 
 if not common.isCLI():
   print("Content-type: text/html; charset=UTF-8;\n\n")
+
+import config
 
 common.echo("hello there")
 
