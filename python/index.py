@@ -1,16 +1,27 @@
-#!/usr/bin/env python
-print("Content-type: text/html")
-print("")
-#cgitb prints errors to the browser
-import cgitb
-cgitb.enable()
-#untangle loads xml into an object -- https://github.com/stchris/untangle -- pip install untangle
-import untangle
-CONFIG = untangle.parse('../config.xml')
-print (CONFIG.__dict__)
+#! python
 
-# print("<html><head>")
-# print("")
-# print("</head><body>")
-# print("python port of WaSQL Web Development Platform - in development")
-# print("</body></html>")
+import os
+import sys
+
+import common
+#import config
+
+if not common.isCLI():
+  print("Content-type: text/html; charset=UTF-8;\n\n")
+
+common.echo("hello there")
+
+if common.isWindows():
+  common.echo("you are on windows")
+else:
+  common.echo("you are not on windows")
+
+if common.isCLI():
+  common.echo("running from command line")
+else:
+  common.echo("not running from command line")
+
+# if common.isDate('2019-1d2-22'):
+#   print("valid date",end="<br />\n")
+# else:
+#   print("invalid date",end="<br />\n")
