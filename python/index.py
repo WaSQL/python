@@ -9,54 +9,45 @@ import sys
 #import common.py
 try:
     import common
-    if not common.isCLI():
-        print("Content-type: text/html; charset=UTF-8;\n\n")
+    import requests
+    from urllib.parse import urlparse, parse_qs, parse_qsl
+    import config
+    import db
+    from importlib import import_module
     #common.echo("common imported")
 except ImportError as err:
     print("Content-type: text/plain; charset=UTF-8;\n\n")
     sys.exit(err)
-
-#import requests
-try:
-    import requests
-except ImportError as err:
-    sys.exit(err)
-
-#import urlparse
-try:
-    from urllib.parse import urlparse, parse_qs
-except ImportError as err:
-    sys.exit(err)
-
-
-#import config 
-try:
-    import config
-except ImportError as err:
-    sys.exit(err)
-
-#import db
-try:
-    import db
-except ImportError as err:
-    print(err)
-    sys.exit(err)
-url = '//'+os.environ['HTTP_HOST']+os.environ['REQUEST_URI']
-parsed_url = urlparse(url)
-REQUEST = parse_qs(parsed_url.query)
-#common.printValue(parsed_url)
-common.printValue(REQUEST)
-common.printValue('<HR>')
-#test
-recs = db.queryResults('wasql5',"select code,name from states where country='US'",{});
-common.printValue(recs)
-#check to see if results is an array.
-if type(recs) in (tuple, list):
-    for rec in recs:
-        print(rec)
-        for key in rec.keys():
-            print(rec[key])
-            break
-        break
+#header
+if not common.isCLI():
+    print("Content-type: text/html; charset=UTF-8;\n\n")
+#url
+url = '//'+os.environ['HTTP_HOST']
+if 'REDIRECT_URL' in os.environ:
+    url+=os.environ['REDIRECT_URL']
+    if 'QUERY_STRING' in os.environ:
+        url+='?'+os.environ['QUERY_STRING']
 else:
-    print(recs)
+    url+=os.environ['REQUEST_URI']
+
+# REQUEST setup
+parsed_url = urlparse(url)
+REQUEST = dict(parse_qsl(parsed_url.query))
+#view a page
+if '_view' in REQUEST:
+    query="select * from _pages where name='{}' or permalink='{}'".format(REQUEST['_view'],REQUEST['_view'])
+    recs = db.queryResults(config.CONFIG['database'],query,{});
+    if type(recs) in (tuple, list):
+        for rec in recs:
+            if 'functions' in rec and len(rec['functions']) > 0:
+                filename = 'd:/wasql.py/python/page.py'
+                modname='page'
+                #common.setFileContents(filename,'#! python'+os.linesep+rec['functions'])
+                import page
+
+                #os.remove(filename)
+            eval(rec['body'])
+            break
+    else:
+        print(recs)
+

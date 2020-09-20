@@ -3,16 +3,25 @@
     modules list
         https://docs.python.org/3/py-modindex.html
 '''
+try:
+    import os
+    import sys
+    import pprint
+    import re as regex
+except ImportError as err:
+    sys.exit(err)
 
-import os
-import sys
-import pprint
 #import dateparser
 def echo(str):
     if isCLI():
         print(str,end="\n")
     else:
         print(str,end="<br />\n")
+
+def setFileContents(filename,data):
+    f = open(filename, 'w')
+    f.write(data)
+    f.close()
 
 def getParentPath(path):
     return os.path.abspath(os.path.join(path, os.pardir))
@@ -45,7 +54,7 @@ def nl2br(string, is_xhtml= True ):
         return string.replace('\n','<br>\n')
 
 def printValue(obj):
-    pprint.pprint(obj)
+    print(pprint.pformat(obj).strip("'"))
 
 
 

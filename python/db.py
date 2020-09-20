@@ -1,25 +1,4 @@
-"""
-Install needed modules
-    Oracle - https://cx-oracle.readthedocs.io/en/latest/user_guide/introduction.html
-        python -m pip install cx_Oracle
-    Postgres - https://stackoverflow.com/questions/413228/pygresql-vs-psycopg2
-        python -m pip install psycopg2
-    HANA - https://github.com/SAP/PyHDB
-        python -m pip install pyhdb
-    ODBC - https://github.com/mkleehammer/pyodbc/wiki
-        python -m pip install pyodbc
-    Mysql - https://www.w3schools.com/python/python_mysql_select.asp
-        python -m pip install mysql.connector
-    MsSQL - https://docs.microsoft.com/en-us/sql/connect/python/python-driver-for-sql-server
-        python -m pip install pymssql
-    SQLite - https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
-
-    Snowflake
-        python -m pip install --upgrade snowflake-connector-python
-
-https://stackoverflow.com/questions/2349991/how-to-import-other-python-files
-"""
-
+#! python
 #imports
 try:
     import sys
