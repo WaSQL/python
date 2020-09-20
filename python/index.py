@@ -38,7 +38,8 @@ parsed_url = urlparse(url)
 REQUEST = dict(parse_qsl(parsed_url.query))
 #view a page
 if '_view' in REQUEST:
-    query="select * from _pages where name='{}' or permalink='{}'".format(REQUEST['_view'],REQUEST['_view'])
+    view = REQUEST['_view']
+    query=f"select * from _pages where name='{view}' or permalink='{view}'"
     recs = db.queryResults(config.CONFIG['database'],query,{})
     if type(recs) in (tuple, list):
         for rec in recs:
