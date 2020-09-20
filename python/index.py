@@ -22,7 +22,10 @@ except ImportError as err:
 if not common.isCLI():
     print("Content-type: text/html; charset=UTF-8;\n\n")
 #url
-url = '//'+os.environ['HTTP_HOST']
+HTTP_HOST = 'localhost'
+if 'HTTP_HOST' in os.environ:
+    HTTP_HOST = os.environ['HTTP_HOST']
+url = '//'+HTTP_HOST
 if 'REDIRECT_URL' in os.environ:
     url+=os.environ['REDIRECT_URL']
     if 'QUERY_STRING' in os.environ:
@@ -36,18 +39,17 @@ REQUEST = dict(parse_qsl(parsed_url.query))
 #view a page
 if '_view' in REQUEST:
     query="select * from _pages where name='{}' or permalink='{}'".format(REQUEST['_view'],REQUEST['_view'])
-    recs = db.queryResults(config.CONFIG['database'],query,{});
+    recs = db.queryResults(config.CONFIG['database'],query,{})
     if type(recs) in (tuple, list):
         for rec in recs:
-            if 'functions' in rec and len(rec['functions']) > 0:
-                filename = 'd:/wasql.py/python/page.py'
-                modname='page'
-                #common.setFileContents(filename,'#! python'+os.linesep+rec['functions'])
-                import page
+            # if 'functions' in rec and len(rec['functions']) > 0:
+            #     filename = 'd:/wasql.py/python/page.py'
+            #     modname='page'
+            #     #common.setFileContents(filename,'#! python'+os.linesep+rec['functions'])
+            #     import page
 
-                #os.remove(filename)
+            #     #os.remove(filename)
             eval(rec['body'])
             break
     else:
         print(recs)
-
