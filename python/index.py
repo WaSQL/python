@@ -39,6 +39,7 @@ REQUEST = dict(parse_qsl(parsed_url.query))
 #view a page
 if '_view' in REQUEST:
     view = REQUEST['_view']
+    #build query using python3+ f strings
     query=f"select * from _pages where name='{view}' or permalink='{view}'"
     recs = db.queryResults(config.CONFIG['database'],query,{})
     if type(recs) in (tuple, list):
