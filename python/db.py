@@ -1,7 +1,8 @@
 #! python
 #imports
+import os
+import sys
 try:
-    import sys
     import config
     import common
 except ImportError as err:
@@ -37,3 +38,7 @@ def queryResults(dbname,query,params):
         if config.DATABASE[dbname]['dbtype'].startswith('sqlite'):
             import sqlitedb
             return sqlitedb.queryResults(query,params)
+        #POSTGRES
+        if config.DATABASE[dbname]['dbtype'].startswith('postgre'):
+            import postgresdb
+            return postgresdb.queryResults(query,params)

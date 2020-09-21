@@ -51,7 +51,10 @@ if '_view' in REQUEST:
             #     import page
 
             #     #os.remove(filename)
-            eval(rec['body'])
+            compiledCodeBlock = compile(rec['body'], '<string>', 'exec')
+            rtn = eval(compiledCodeBlock)
+            if rtn:
+                print(rtn)
             break
     else:
         print(recs)

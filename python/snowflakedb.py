@@ -8,11 +8,11 @@ Installation
            reboot and try again
 
 """
-
-
 #imports
 try:
+    import sys
     import snowflake.connector
+    from snowflake.connector import Error
     import config
     import common
 except ImportError as err:
@@ -59,10 +59,9 @@ def connect(params):
 
         if 'dbschema' in params:
             dbconfig['schema'] = params['dbschema']
-
         # connect
         conn_snowflake = snowflake.connector.connect(**dbconfig)
-        cur_snowflake = conn_snowflake.cursor(dictionary=True)
+        cur_snowflake = conn_snowflake.cursor()
             
         #need to return both cur and conn so conn stays around
         return cur_snowflake, conn_snowflake
@@ -73,6 +72,8 @@ def connect(params):
 
 ###########################################
 def queryResults(query,params):
+    print(params)
+    sys.exit('stop')
     try:
         #connect
         cur_snowflake, conn_snowflake =  connect(params)

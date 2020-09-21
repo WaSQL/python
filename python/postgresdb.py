@@ -16,6 +16,7 @@ References
 try:
     import psycopg2
     from psycopg2 import pool
+    import psycopg2.extras
     import config
     import common
 except ImportError as err:
@@ -55,10 +56,10 @@ def connect(params):
         # Get connection object from a pool if possible, otherwise just connect
         conn_postgres = pool_postgres.getconn()
         if conn_postgres:
-            cur_postgres = conn_postgres.cursor(dictionary=True)
+            cur_postgres = conn_postgres.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         else:
             conn_postgres = psycopg2.connect(**dbconfig)
-            cur_postgres = conn_postgres.cursor(dictionary=True)
+            cur_postgres = conn_postgres.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         #need to return both cur and conn so conn stays around
         return cur_postgres, conn_postgres
         
@@ -81,6 +82,6 @@ def queryResults(query,params):
         else:
             return []
         
-    except psycopg2.connector.Error as err:
+    except psycopg2.Error as err:
         return ("postgresdb.queryResults error: {}".format(err))
 ###########################################
