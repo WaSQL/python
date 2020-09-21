@@ -44,14 +44,15 @@ if '_view' in REQUEST:
     recs = db.queryResults(config.CONFIG['database'],query,{})
     if type(recs) in (tuple, list):
         for rec in recs:
-            # if 'functions' in rec and len(rec['functions']) > 0:
-            #     filename = 'd:/wasql.py/python/page.py'
-            #     modname='page'
-            #     #common.setFileContents(filename,'#! python'+os.linesep+rec['functions'])
-            #     import page
+            compileString=''
+            if 'functions' in rec and len(rec['functions']) > 0:
+                compileString += rec['functions']
+                compileString += os.linesep
+                compileString += os.linesep
 
             #     #os.remove(filename)
-            compiledCodeBlock = compile(rec['body'], '<string>', 'exec')
+            compileString += rec['body']
+            compiledCodeBlock = compile(compileString, '<string>', 'exec')
             rtn = eval(compiledCodeBlock)
             if rtn:
                 print(rtn)
