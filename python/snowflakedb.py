@@ -13,6 +13,7 @@ try:
     import sys
     import snowflake.connector
     from snowflake.connector import Error
+    from snowflake.connector import DictCursor
     import config
     import common
 except ImportError as err:
@@ -61,7 +62,7 @@ def connect(params):
             dbconfig['schema'] = params['dbschema']
         # connect
         conn_snowflake = snowflake.connector.connect(**dbconfig)
-        cur_snowflake = conn_snowflake.cursor()
+        cur_snowflake = conn_snowflake.cursor(DictCursor)
             
         #need to return both cur and conn so conn stays around
         return cur_snowflake, conn_snowflake
@@ -69,7 +70,23 @@ def connect(params):
     except snowflake.connector.Error as err:
         print("snowflakedb.connect error: {}".format(err))
         return false
-
+###########################################
+def dictFactory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_snowflake, conn_snowflake =  connect(params)
+        #now execute the query
+        cur_snowflake.execute(query)
+        return True
+        
+    except snowflake.connector.Error as err:
+        return ("snowflakedb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     print(params)

@@ -49,31 +49,47 @@ def connect(params):
             dbconfig['database'] = params['dbname']
 
         # Connect
-        conn_pymssql = pymssql.connect(**dbconfig)
-        cur_pymssql = conn_pymssql.cursor(dictionary=True)
+        conn_mssql = pymssql.connect(**dbconfig)
+        cur_mssql = conn_mssql.cursor(as_dict=True)
             
         #need to return both cur and conn so conn stays around
-        return cur_pymssql, conn_pymssql
+        return cur_mssql, conn_mssql
         
     except pymssql.Error as err:
-        print("pymssqldb.connect error: {}".format(err))
+        print("mssqldb.connect error: {}".format(err))
         return false
-
+###########################################
+def dictFactory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_mssql, conn_mssql =  connect(params)
+        #now execute the query
+        cur_mssql.execute(query)
+        return True
+        
+    except pymssql.Error as err:
+        return ("mssqldb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     try:
         #connect
-        cur_pymssql, conn_pymssql =  connect(params)
+        cur_mssql, conn_mssql =  connect(params)
         #now execute the query
-        cur_pymssql.execute(query)
-        #NOTE: columns names can be accessed by cur_pymssql.column_names
-        recs = cur_pymssql.fetchall()
-        #NOTE: get row count with cur_pymssql.rowcount
+        cur_mssql.execute(query)
+        #NOTE: columns names can be accessed by cur_mssql.column_names
+        recs = cur_mssql.fetchall()
+        #NOTE: get row count with cur_mssql.rowcount
         if type(recs) in (tuple, list):
             return recs
         else:
             return []
         
     except pymssql.Error as err:
-        return ("pymssqldb.queryResults error: {}".format(err))
+        return ("mssqldb.queryResults error: {}".format(err))
 ###########################################

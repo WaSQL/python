@@ -69,6 +69,23 @@ def connect(params):
     except mysql.connector.Error as err:
         print("mysqldb.connect error: {}".format(err))
         return false
+###########################################
+def dictFactory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_mysql, conn_mysql =  connect(params)
+        #now execute the query
+        cur_mysql.execute(query)
+        return True
+        
+    except mysql.connector.Error as err:
+        return ("mysqldb.executeSQL error: {}".format(err))
 
 ###########################################
 def queryResults(query,params):

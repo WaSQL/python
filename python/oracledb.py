@@ -18,18 +18,6 @@ try:
 except ImportError as err:
     sys.exit(err)
 ###########################################
-def makeDictFactory(cursor):
-    columnNames = [d[0] for d in cursor.description]
-    def createRow(*args):
-        return dict(zip(columnNames, args))
-    return createRow
-###########################################
-def makeNamedTupleFactory(cursor):
-    columnNames = [d[0].lower() for d in cursor.description]
-    import collections
-    Row = collections.namedtuple('Row', columnNames)
-    return Row
-###########################################
 #Python’s default arguments are evaluated once when the function is defined, not each time the function is called.
 def connect(params):
     try:
@@ -136,14 +124,30 @@ def connect(params):
         else:
             conn_oracle = cx_Oracle.connect(**cconfig)
             cur_oracle = conn_oracle.cursor()
-        cur_oracle.rowfactory = lambda *args: dict(zip([d[0] for d in cur_oracle.description], args))
+        cur_oracle.rowfactory = dictFactory
         #need to return both cur and conn so conn stays around
         return cur_oracle, conn_oracle
         
     except cx_Oracle.Error as err:
         print("oracledb.connect error: {}".format(err))
         return False
-
+###########################################
+def dictFactory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_oracle, conn_oracle =  connect(params)
+        #now execute the query
+        cur_oracle.execute(query)
+        return True
+        
+    except cx_Oracle.Error as err:
+        return ("oracledb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     try:

@@ -56,17 +56,33 @@ def connect(params):
         # Get connection object from a pool if possible, otherwise just connect
         conn_postgres = pool_postgres.getconn()
         if conn_postgres:
-            cur_postgres = conn_postgres.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+            cur_postgres = conn_postgres.cursor(cursor_factory=dictFactory)
         else:
             conn_postgres = psycopg2.connect(**dbconfig)
-            cur_postgres = conn_postgres.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+            cur_postgres = conn_postgres.cursor(cursor_factory=dictFactory)
         #need to return both cur and conn so conn stays around
         return cur_postgres, conn_postgres
         
     except psycopg2.Error as err:
         print("postgresdb.connect error: {}".format(err))
         return false
-
+###########################################
+def dictFactory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_postgres, conn_postgres =  connect(params)
+        #now execute the query
+        cur_postgres.execute(query)
+        return True
+        
+    except psycopg2.Error as err:
+        return ("postgresdb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     try:

@@ -29,7 +29,7 @@ def connect(params):
 
         # Connect
         conn_sqlite = sqlite3.connect(dbconfig['database'])
-        conn_sqlite.row_factory = dict_factory
+        conn_sqlite.row_factory = dictFactory
         conn_sqlite.text_factory = sqlite3.OptimizedUnicode
         cur_sqlite = conn_sqlite.cursor()
             
@@ -40,11 +40,22 @@ def connect(params):
         print("sqlitedb.connect error: {}".format(err))
         return false
 ###########################################
-def dict_factory(cursor, row):
+def dictFactory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_sqlite, conn_sqlite =  connect(params)
+        #now execute the query
+        cur_sqlite.execute(query)
+        return True
+        
+    except Error as err:
+        return ("sqlitedb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     try:

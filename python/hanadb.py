@@ -52,7 +52,17 @@ def connect(params):
     except pyhdb.Error as err:
         print("hanadb.connect error: {}".format(err))
         return false
-
+###########################################
+def executeSQL(query,params):
+    try:
+        #connect
+        cur_hana, conn_hana =  connect(params)
+        #now execute the query
+        cur_hana.execute(query)
+        return True
+        
+    except pyhdb.Error as err:
+        return ("hanadb.executeSQL error: {}".format(err))
 ###########################################
 def queryResults(query,params):
     try:
