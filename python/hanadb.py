@@ -14,6 +14,31 @@ try:
 except ImportError as err:
     sys.exit(err)
 ###########################################
+def addIndex(params):
+    #check required
+    if '-table' not in params:
+        return ("mysqldb.addIndex error: No Table Specified")
+    if '-fields' not in params:
+        return ("mysqldb.addIndex error: No Fields Specified")
+    #check for unique and fulltext
+    fulltext = ''
+    unique = ''
+    prefix = ''
+    if '-unique' in params:
+        unique =' UNIQUE'
+        prefix += 'U'
+    if '-fulltext' in params:
+        fulltext =' FULLTEXT'
+        prefix += 'F'
+    #build index name if not passed in
+    if '-name' not in params:
+        params['-name']="{}_{}_".format(prefix,params['-table']);
+    #create query
+    fieldstr = params['-fields'].replace(',','_')
+    query="CREATE {} INDEX IF NOT EXISTS {} on {} ({})".format(unique,params['-name'],params['-table'],fieldstr);
+    #execute query
+    return executeSQL(query) 
+###########################################
 #Python’s default arguments are evaluated once when the function is defined, not each time the function is called.
 def connect(params):
     try:

@@ -32,8 +32,11 @@ def queryResults(dbname,query,params):
             return oracledb.queryResults(query,params)
         #SNOWFLAKE
         if config.DATABASE[dbname]['dbtype'].startswith('snowflake'):
-            import snowflakedb
-            return snowflakedb.queryResults(query,params)
+            try:
+                import snowflakedb
+                return snowflakedb.queryResults(query,params)
+            except ImportError as err:
+                return err
         #SQLITE
         if config.DATABASE[dbname]['dbtype'].startswith('sqlite'):
             import sqlitedb

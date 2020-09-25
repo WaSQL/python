@@ -100,6 +100,16 @@ def nl2br(string, is_xhtml= True ):
 def printValue(obj):
     print(pprint.pformat(obj).strip("'"))
 
+def stringContains(str,substr):
+    if substr in str:
+        return True
+    else:
+        return False
+
+def str_replace(str, str2, str3):
+    result = str3.replace(str,str2)
+    return result
+
 
 
 
