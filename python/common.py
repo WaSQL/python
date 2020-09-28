@@ -8,11 +8,16 @@ try:
     import sys
     import pprint
     import re
+    import io
     from math import sin, cos, sqrt, atan2, radians
     import subprocess
+    from datetime import datetime
+    import time as ttime
 except ImportError as err:
     sys.exit(err)
 
+VIEWS = {}
+VIEW = {}
 #import dateparser
 
 def buildDir(path,mode=0o777,recurse=True):
@@ -62,6 +67,20 @@ def setFileContents(filename,data):
     f.write(data)
     f.close()
 
+def evalPython(str):
+    #point stdout to a variable
+    old_stdout = sys.stdout
+    new_stdout = io.StringIO()
+    sys.stdout = new_stdout
+    #compile
+    compiledCodeBlock = compile(str, '<string>', 'exec')
+    rtn = eval(compiledCodeBlock)
+    #point stdout back
+    output = new_stdout.getvalue()
+    sys.stdout = old_stdout
+    #return
+    return output
+
 def formatPhone(phone_number):
     clean_phone_number = re.sub('[^0-9]+', '', phone_number)
     formatted_phone_number = re.sub("(\d)(?=(\d{3})+(?!\d))", r"\1-", "%d" % int(clean_phone_number[:-1])) + clean_phone_number[-1]
@@ -97,6 +116,47 @@ def nl2br(string, is_xhtml= True ):
     else :
         return string.replace('\n','<br>\n')
 
+def parseViews(str):
+    global VIEWS
+    VIEWS = {}
+    matches = re.findall(r'<view:(.*?)>(.+?)</view:\1>', str,re.MULTILINE|re.IGNORECASE|re.DOTALL)
+    for (viewname,viewbody) in matches:
+        VIEWS[viewname]=viewbody
+    return True
+
+def parseViewsOnly(str):
+    views = {}
+    matches = re.findall(r'<view:(.*?)>(.+?)</view:\1>', str,re.MULTILINE|re.IGNORECASE|re.DOTALL)
+    for (viewname,viewbody) in matches:
+        views[viewname]=viewbody
+    return views
+
+def parseCodeBlocks(str):
+    matches = re.findall(r'<\?=(.*?)\?>', str,re.MULTILINE|re.IGNORECASE|re.DOTALL)
+    for match in matches:
+        evalstr = 'import common'+os.linesep
+        evalstr += os.linesep+"print({})".format(match)
+        rtn = evalPython(evalstr).strip()
+        repstr = "<?={}?>".format(match)
+        str = str_replace(repstr,rtn,str)
+    return str
+
+def setView(name,clear=0):
+    global VIEW
+    if name in VIEWS:
+        if clear == 1:
+            VIEW = {}
+        VIEW[name]=VIEWS[name]
+
+def createView(name,val):
+    global VIEW
+    VIEW[name] = val
+        
+def removeView(name):
+    global VIEW
+    if name in VIEW:
+        del VIEW[name]
+
 def printValue(obj):
     print(pprint.pformat(obj).strip("'"))
 
@@ -109,6 +169,9 @@ def stringContains(str,substr):
 def str_replace(str, str2, str3):
     result = str3.replace(str,str2)
     return result
+
+def time():
+    return ttime.time()
 
 
 
