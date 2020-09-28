@@ -134,7 +134,11 @@ def parseViewsOnly(str):
 def parseCodeBlocks(str):
     matches = re.findall(r'<\?=(.*?)\?>', str,re.MULTILINE|re.IGNORECASE|re.DOTALL)
     for match in matches:
+        #add our imports: common, db, re,
         evalstr = 'import common'+os.linesep
+        evalstr += 'import config'+os.linesep
+        evalstr += 'import db'+os.linesep
+        evalstr += 'import re'+os.linesep
         evalstr += os.linesep+"print({})".format(match)
         rtn = evalPython(evalstr).strip()
         repstr = "<?={}?>".format(match)
