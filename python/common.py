@@ -9,6 +9,7 @@ try:
     import pprint
     import re
     import io
+    from contextlib import redirect_stdout
     from math import sin, cos, sqrt, atan2, radians
     import subprocess
     from datetime import datetime
@@ -68,16 +69,25 @@ def setFileContents(filename,data):
     f.close()
 
 def evalPython(str):
+    str = str.strip()
     #point stdout to a variable
+    sys.stdout.flush()
     old_stdout = sys.stdout
     new_stdout = io.StringIO()
     sys.stdout = new_stdout
     #compile
     compiledCodeBlock = compile(str, '<string>', 'exec')
-    rtn = eval(compiledCodeBlock)
+    eval(compiledCodeBlock)
     #point stdout back
-    output = new_stdout.getvalue()
+    output = new_stdout.getvalue().strip()
     sys.stdout = old_stdout
+    #remove and None lines
+    lines = output.splitlines()
+    output = ''
+    for line in lines:
+        line = line.strip()
+        if line != 'None':
+            output += line+os.linesep
     #return
     return output
 
@@ -142,6 +152,23 @@ def parseCodeBlocks(str):
         evalstr += os.linesep+"print({})".format(match)
         rtn = evalPython(evalstr).strip()
         repstr = "<?={}?>".format(match)
+        if rtn == 'None':
+            rtn = ''
+        str = str_replace(repstr,rtn,str)
+    matches = re.findall(r'<\?py(.*?)\?>', str,re.MULTILINE|re.IGNORECASE|re.DOTALL)
+    for match in matches:
+        #add our imports: common, db, re,
+        evalstr = 'import common'+os.linesep
+        evalstr += 'import config'+os.linesep
+        evalstr += 'import db'+os.linesep
+        evalstr += 'import re'+os.linesep
+        lines = match.splitlines()
+        for line in lines:
+            evalstr += os.linesep+"print({})".format(line.strip())
+        rtn = evalPython(evalstr).strip()
+        if rtn == 'None':
+            rtn = ''
+        repstr = "<?py{}?>".format(match)
         str = str_replace(repstr,rtn,str)
     return str
 
